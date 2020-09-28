@@ -43,8 +43,9 @@ def check(in_coord):
     return False
 
 digits = "0123456789"
+player = "X"
 
-u_input = input("Enter cells: ")
+u_input = " " * 9
 cells = [[u_input[8], u_input[7], u_input[6]],
          [u_input[5], u_input[4], u_input[3]],
          [u_input[2], u_input[1], u_input[0]]]
@@ -69,25 +70,33 @@ while True:
 
     coordinates = convert_coordinates(int(coordinates[0]), int(coordinates[1])).split(" ")
 
-    if cells[int(coordinates[0])][int(coordinates[1])] != "_":
+    if cells[int(coordinates[0])][int(coordinates[1])] != " ":
         print("This cell is occupied! Choose another one!")
+        continue
     else:
-        cells[int(coordinates[0])][int(coordinates[1])] = "X"
+        cells[int(coordinates[0])][int(coordinates[1])] = player
+        if player == "X":
+            player = "O"
+        else:
+            player = "X"
+
+    print("---------")
+    print("|", cells[2][2], cells[2][1], cells[2][0], "|")
+    print("|", cells[1][2], cells[1][1], cells[1][0], "|")
+    print("|", cells[0][2], cells[0][1], cells[0][0], "|")
+    print("---------")
+
+    if abs(cells.count("X") - cells.count("O")) > 1 or is_wins("X") and is_wins("O"):
+        print("Impossible")
         break
-
-print("---------")
-print("|", cells[2][2], cells[2][1], cells[2][0], "|")
-print("|", cells[1][2], cells[1][1], cells[1][0], "|")
-print("|", cells[0][2], cells[0][1], cells[0][0], "|")
-print("---------")
-
-#if abs(u_input.count("X") - u_input.count("O")) > 1 or is_wins("X") and is_wins("O"):
-#    print("Impossible")
-#elif is_wins("X"):
-#    print("X wins")
-#elif is_wins("O"):
-#    print("O wins")
-#elif u_input.count("_") == 0:
-#    print("Draw")
+    elif is_wins("X"):
+        print("X wins")
+        break
+    elif is_wins("O"):
+        print("O wins")
+        break
+    elif cells[0].count(" ") + cells[1].count(" ") + cells[2].count(" ") == 0:
+        print("Draw")
+        break
 #else:
 #    print("Game not finished")
